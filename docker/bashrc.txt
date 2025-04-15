@@ -1,0 +1,10 @@
+# Source ros
+source /opt/ros/humble/setup.bash
+source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
+
+if [ -f "/home/ros/ros2_ws/install/setup.bash" ]; then
+    source /home/ros/ros2_ws/install/setup.bash
+fi
+
+# Create alias
+alias sis='source install/setup.bash'

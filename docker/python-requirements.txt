@@ -1,0 +1,6 @@
+empy==3.3.2
+pyros-genmsg
+setuptools
+kconfiglib
+jsonschema
+jinja2
