@@ -44,24 +44,29 @@ RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
 COPY ./docker/python-requirements.txt python-requirements.txt
 RUN pip3 install --no-cache-dir -r python-requirements.txt
 
-# Change access of the ros user. Add to i2c group
-RUN usermod -a -G i2c ros
-RUN usermod -a -G dialout ros
-
 # Set the container's environment variables to enable rviz and others
 ENV QT_X11_NO_MITSHM=1
 
 # Build libraries
-COPY ./libraries /home/${USERNAME}/libraries
-RUN chown -R ${USERNAME} /home/${USERNAME}/libraries
+# COPY ./libraries /home/${USERNAME}/libraries
+# RUN chown -R ${USERNAME} /home/${USERNAME}/libraries
+USER ros
+WORKDIR /home/${USERNAME}
+RUN mkdir libraries
 WORKDIR /home/${USERNAME}/libraries
+
 # PX4-Autopilot
+RUN git clone https://github.com/PX4/PX4-Autopilot.git --recursive -b release/1.15
+USER root
 RUN bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 
 # Micro XRCE-DDS
+USER ros
+RUN git clone https://github.com/eProsima/Micro-XRCE-DDS-Agent.git
 WORKDIR /home/${USERNAME}/libraries/Micro-XRCE-DDS-Agent
 RUN mkdir build
 WORKDIR /home/${USERNAME}/libraries/Micro-XRCE-DDS-Agent/build
+USER root
 RUN cmake .. && make -j$(nproc) && make install && ldconfig /usr/local/lib
 
 # Set up entrypoints

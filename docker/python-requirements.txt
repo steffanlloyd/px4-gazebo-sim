@@ -4,3 +4,4 @@ setuptools
 kconfiglib
 jsonschema
 jinja2
+future
