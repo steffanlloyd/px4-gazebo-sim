@@ -5,3 +5,7 @@
 [submodule "ros2-ws/src/ROS2_PX4_Offboard_Example"]
 	path = ros2-ws/src/ROS2_PX4_Offboard_Example
 	url = https://github.com/ARK-Electronics/ROS2_PX4_Offboard_Example.git
+[submodule "libraries/PX4-Autopilot"]
+	path = libraries/PX4-Autopilot
+	url = https://github.com/PX4/PX4-Autopilot.git
+	branch = release/1.15

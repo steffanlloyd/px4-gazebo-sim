@@ -56,9 +56,11 @@ RUN mkdir libraries
 WORKDIR /home/${USERNAME}/libraries
 
 # PX4-Autopilot
-RUN git clone https://github.com/PX4/PX4-Autopilot.git --recursive -b release/1.15
+RUN git clone https://github.com/PX4/PX4-Autopilot.git
 USER root
 RUN bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
+# we will link our own version of repository
+RUN rm -rf /home/${USERNAME}/PX4-Autopilot
 
 # Micro XRCE-DDS
 USER ros
