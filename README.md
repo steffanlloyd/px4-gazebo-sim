@@ -18,6 +18,11 @@ cd ros2-ws
 colcon build
 ```
 
+To start gazebo (in px4 folder)
+```bash
+PX4_GZ_WORLD=baylands make px4_sitl gz_x500_lidar_down
+```
+
 To do:
 - Bring in a forest map environment
 - Get the ROS messaging working
