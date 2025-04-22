@@ -31,6 +31,7 @@ docker run -itd \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v $(dirname "$0")/../ros2-ws:/home/ros/ros2-ws \
   -v $(dirname "$0")/../save:/home/ros/save \
+  -v $(dirname "$0")/../resources:/home/ros/resources \
   -v $(dirname "$0")/../libs/PX4-Autopilot:/home/ros/libraries/PX4-Autopilot \
   -e DISPLAY \
   -e QT_X11_NO_MITSHM=1 \

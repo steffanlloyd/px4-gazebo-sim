@@ -25,6 +25,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     minicom \ 
     socat \
     lsof \
+    libfuse2 \
+    gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl \
+    libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Setup user. The USER_UID needs to match the user of the host computer! That way the files won't have access issues.
@@ -44,6 +47,9 @@ RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
 COPY ./docker/python-requirements.txt python-requirements.txt
 RUN pip3 install --no-cache-dir -r python-requirements.txt
 
+# Set privelidges for the user
+RUN usermod -aG dialout ros
+
 # Set the container's environment variables to enable rviz and others
 ENV QT_X11_NO_MITSHM=1
 
@@ -61,6 +67,12 @@ USER root
 RUN bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 # we will link our own version of repository
 RUN rm -rf /home/${USERNAME}/PX4-Autopilot
+
+# Qgroundcontrol
+RUN apt-get update && apt-get remove modemmanager -y \
+    && rm -rf /var/lib/apt/lists/*
+RUN wget https://d176tv9ibo4jno.cloudfront.net/latest/QGroundControl.AppImage
+RUN chmod +x ./QGroundControl.AppImage
 
 # Micro XRCE-DDS
 USER ros
