@@ -3,7 +3,7 @@ old/
 .github
 playground/
 libs/
-resources/
+resources/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
