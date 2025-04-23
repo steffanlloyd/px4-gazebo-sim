@@ -10,7 +10,7 @@ This software is designed to be run on any Ubuntu 20.04 or higher host machine. 
 
 You need to clone the repository with submodules to get all the files. Use the command:
 ```bash
-git clone https://gitlab.nibio.no/dsu_3232/spade/gazebo_px4_sim.git --recursive
+git clone https://github.com/steffanlloyd/px4-gazebo-sim.git --recursive
 ```
 
 ## How to set up
