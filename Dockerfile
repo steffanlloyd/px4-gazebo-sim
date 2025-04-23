@@ -71,8 +71,8 @@ RUN rm -rf /home/${USERNAME}/PX4-Autopilot
 # Qgroundcontrol
 RUN apt-get update && apt-get remove modemmanager -y \
     && rm -rf /var/lib/apt/lists/*
-RUN wget https://d176tv9ibo4jno.cloudfront.net/latest/QGroundControl.AppImage
-RUN chmod +x ./QGroundControl.AppImage
+# RUN wget https://d176tv9ibo4jno.cloudfront.net/latest/QGroundControl.AppImage
+# RUN chmod +x ./QGroundControl.AppImage
 
 # Micro XRCE-DDS
 USER ros
