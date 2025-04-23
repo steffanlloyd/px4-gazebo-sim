@@ -2,6 +2,8 @@
 
 This repository gives the scaffolding for running a PX4 drone simulation in a forest environment. It makes use of a repository by ARK-Electronics called [ROS_PX4_Offboard_Example](https://github.com/ARK-Electronics/ROS2_PX4_Offboard_Example), but makes some corrections to get everything to launch properly, use the correct map, and dockerizes the whole setup to make the system portable.
 
+For help using the offboard control module included as a sample, please watch this video: [https://www.youtube.com/watch?v=8gKIP0OqHdQ](https://www.youtube.com/watch?v=8gKIP0OqHdQ).
+
 ## Requirements
 
 This software is designed to be run on any Ubuntu 20.04 or higher host machine. The software itself will run under a Docker image.
