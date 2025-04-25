@@ -21,6 +21,7 @@ If you don't already have docker install, install it now. There is a convenience
 ```bash
 ./scripts/docker_install.sh
 ```
+After installing docker, you need to log out and then log back in to your computer to allow some permission changes to take effect. Or just reboot!
 
 To set up the repository, run the `scripts/init.sh` script:
 ```bash

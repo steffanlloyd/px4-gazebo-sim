@@ -24,3 +24,5 @@ sudo docker run hello-world
 # Fix permissions
 sudo groupadd docker
 sudo usermod -aG docker $USER
+
+echo "Please log out and back in to apply the group changes! Otherwise you will get permission errors when running docker."
