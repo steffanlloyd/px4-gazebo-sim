@@ -90,6 +90,12 @@ Terminal 1, run the launch file for the control example:
 sis # source the install
 ros2 launch px4_offboard offboard_velocity_control.launch.py 
 ```
+This launch file launches 5 nodes
+ - A ROS-Gazebo bridge, that brings in some sensor data into ROS and sycs the simulation clocks.
+ - A python node called `visualizer.py` in the px4_offboard package, that handles the publishing of the PX4 autopilot data into the RViZ simulation.
+ - A python node called `velocity_control.py`. This node handles the velocity commands sent to autopilot, from the control node initialized in terminal 2 below. This is the node you will need to remake to scan the forest autonomously.
+ - An RViz node for visualization.
+ - A node that establishes the transform between the drone and the Lidar sensor (necessary for the visualization of the point cloud).
 
 Terminal 2: run the control input window:
 ```bash
