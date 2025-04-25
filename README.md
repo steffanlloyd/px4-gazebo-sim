@@ -70,7 +70,7 @@ First, **on the host machine**, you need to run QGroundControl. The init script 
 Second, **in the docker image**, run the Gazebo simulation. Use this command:
 ```bash
 cd ~/libraries/PX4-Autopilot
-PX4_GZ_WORLD=baylands make px4_sitl gz_x500_lidar_down
+PX4_GZ_WORLD=baylands make px4_sitl gz_x500_lidar_2d
 ```
 
 ### MicroDDS

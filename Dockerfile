@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfuse2 \
     gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl \
     libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev \
+    ros-humble-ros-gz-bridge \
     && rm -rf /var/lib/apt/lists/*
 
 # Setup user. The USER_UID needs to match the user of the host computer! That way the files won't have access issues.
@@ -82,6 +83,15 @@ RUN mkdir build
 WORKDIR /home/${USERNAME}/libraries/Micro-XRCE-DDS-Agent/build
 USER root
 RUN cmake .. && make -j$(nproc) && make install && ldconfig /usr/local/lib
+
+# Install gazebo bridge
+RUN sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.osrfoundation.org/gazebo/ubuntu \
+  $(lsb_release -cs) main" > /etc/apt/sources.list.d/gazebo-latest.list'
+RUN curl -sSL https://packages.osrfoundation.org/gazebo.key | sudo apt-key add -
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gz-harmonic ros-humble-ros-gzharmonic \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Set up entrypoints
 COPY ./docker/bashrc.txt /home/${USERNAME}/.bashrc

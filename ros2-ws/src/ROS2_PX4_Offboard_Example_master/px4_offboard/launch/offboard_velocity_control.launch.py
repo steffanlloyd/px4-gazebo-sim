@@ -44,9 +44,19 @@ import os
 
 def generate_launch_description():
     package_dir = get_package_share_directory('px4_offboard')
-    # bash_script_path = os.path.join(package_dir, 'scripts', 'TerminatorScript.sh')
+
     return LaunchDescription([
-        # ExecuteProcess(cmd=['bash', bash_script_path], output='screen'),
+        # Ros-Gazebo bridge using YAML configuration
+        Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='gz_ros_bridge',
+            arguments=[
+                '--ros-args',
+                '-p', f"config_file:={os.path.join(package_dir, 'config', 'gz_bridges.yaml')}"
+            ],
+            output='screen'
+        ),
         Node(
             package='px4_offboard',
             namespace='px4_offboard',

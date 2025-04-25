@@ -1,0 +1,6 @@
+- ros_topic_name: "scan"
+  # gz_topic_name: "/world/default/model/x500_lidar_2d_0/link/lidar_sensor_link/sensor/lidar/scan"
+  gz_topic_name: /world/baylands/model/x500_lidar_2d_0/link/link/sensor/lidar_2d_v2/scan
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
