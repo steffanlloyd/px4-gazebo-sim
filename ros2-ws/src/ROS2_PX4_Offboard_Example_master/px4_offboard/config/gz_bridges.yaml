@@ -1,6 +1,25 @@
 - ros_topic_name: "scan"
-  # gz_topic_name: "/world/default/model/x500_lidar_2d_0/link/lidar_sensor_link/sensor/lidar/scan"
   gz_topic_name: /world/baylands/model/x500_lidar_2d_0/link/link/sensor/lidar_2d_v2/scan
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
+  subscriber_queue: 15                               # (optional) ROS QoS depth
+  publisher_queue: 15                                # (optional) Gazebo QoS depth
+  lazy: false                                       # (optional) start bridge even if no subscribers
+
+
+- ros_topic_name: "scan_points"                    # ROS 2 topic name you want
+  gz_topic_name: "/world/baylands/model/x500_lidar_2d_0/link/link/sensor/lidar_2d_v2/scan/points" # Exact Gazebo Transport topic
+  ros_type_name: "sensor_msgs/msg/PointCloud2"      # Full ROS 2 type
+  gz_type_name: "gz.msgs.PointCloudPacked"          # Full Gazebo msg type
+  direction: GZ_TO_ROS                               # Only Gazebo → ROS
+  subscriber_queue: 15                               # (optional) ROS QoS depth
+  publisher_queue: 15                                # (optional) Gazebo QoS depth
+  lazy: false                                       # (optional) start bridge even if no subscribers
+
+# in config/gz_bridges.yaml
+- ros_topic_name: "clock"
+  gz_topic_name: "/world/baylands/clock"
+  ros_type_name: "rosgraph_msgs/msg/Clock"
+  gz_type_name:   "gz.msgs.Clock"
+  direction:      GZ_TO_ROS

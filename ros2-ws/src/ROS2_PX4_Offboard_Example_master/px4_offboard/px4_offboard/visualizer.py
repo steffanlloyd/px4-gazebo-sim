@@ -50,6 +50,9 @@ from geometry_msgs.msg import PoseStamped, Point
 from nav_msgs.msg import Path
 from visualization_msgs.msg import Marker
 
+from geometry_msgs.msg import TransformStamped
+from tf2_ros import TransformBroadcaster
+
 def vector2PoseMsg(frame_id, position, attitude):
     pose_msg = PoseStamped()
     # msg.header.stamp = Clock().now().nanoseconds / 1000
@@ -96,6 +99,8 @@ class PX4Visualizer(Node):
         self.vehicle_path_pub = self.create_publisher(Path, '/px4_visualizer/vehicle_path', 10)
         self.setpoint_path_pub = self.create_publisher(Path, '/px4_visualizer/setpoint_path', 10)
 
+        self.tf_broadcaster = TransformBroadcaster(self)
+
         self.vehicle_attitude = np.array([1.0, 0.0, 0.0, 0.0])
         self.vehicle_local_position = np.array([0.0, 0.0, 0.0])
         self.vehicle_local_velocity = np.array([0.0, 0.0, 0.0])
@@ -104,6 +109,20 @@ class PX4Visualizer(Node):
         self.setpoint_path_msg = Path()
         timer_period = 0.05  # seconds
         self.timer = self.create_timer(timer_period, self.cmdloop_callback)
+
+    def vector2tform(self, frame_id, position, attitude):
+        t = TransformStamped()
+        t.header.stamp = self.get_clock().now().to_msg()
+        t.header.frame_id=frame_id
+        t.child_frame_id = 'drone_base'
+        t.transform.rotation.w = attitude[0]
+        t.transform.rotation.x = attitude[1]
+        t.transform.rotation.y = attitude[2]
+        t.transform.rotation.z = attitude[3]
+        t.transform.translation.x = position[0]
+        t.transform.translation.y = position[1]
+        t.transform.translation.z = position[2]
+        return t
 
     def vehicle_attitude_callback(self, msg):
         # TODO: handle NED->ENU transformation 
@@ -156,6 +175,10 @@ class PX4Visualizer(Node):
     def cmdloop_callback(self):
         vehicle_pose_msg = vector2PoseMsg('map', self.vehicle_local_position, self.vehicle_attitude)
         self.vehicle_pose_pub.publish(vehicle_pose_msg)
+
+        vehicle_tform = self.vector2tform('map', self.vehicle_local_position, self.vehicle_attitude)
+        self.tf_broadcaster.sendTransform(vehicle_tform)
+
 
         # Publish time history of the vehicle path
         self.vehicle_path_msg.header = vehicle_pose_msg.header

@@ -32,21 +32,27 @@
 #
 ############################################################################
 
-__author__ = "Braden Wagstaff"
-__contact__ = "braden@arkelectron.com"
-
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 import os
-
+from launch.substitutions import LaunchConfiguration
+from launch.actions import DeclareLaunchArgument
+use_sim_time = LaunchConfiguration('use_sim_time')
 
 def generate_launch_description():
     package_dir = get_package_share_directory('px4_offboard')
 
     return LaunchDescription([
+        # Sync with simulation time
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='true',
+            description='Use simulation (Gazebo) clock'
+        ),
         # Ros-Gazebo bridge using YAML configuration
+        # Syncs the gazebo clock with the ROS clock, and brings in the point clouds.
         Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
@@ -55,39 +61,49 @@ def generate_launch_description():
                 '--ros-args',
                 '-p', f"config_file:={os.path.join(package_dir, 'config', 'gz_bridges.yaml')}"
             ],
-            output='screen'
+            output='screen',
+            parameters=[{'use_sim_time': True}]
         ),
+        # Node that publishes the simulation data into Rviz
         Node(
             package='px4_offboard',
             namespace='px4_offboard',
             executable='visualizer',
-            name='visualizer'
+            name='visualizer',
+            parameters=[{'use_sim_time': True}]
         ),
-        # Node(
-        #     package='px4_offboard',
-        #     namespace='px4_offboard',
-        #     executable='processes',
-        #     name='processes',
-        #     prefix='gnome-terminal --'
-        # ),
-        # Node(
-        #     package='px4_offboard',
-        #     namespace='px4_offboard',
-        #     executable='control',
-        #     name='control',
-        #     prefix='gnome-terminal --',
-        # ),
+        # Node that handles the manual offboard control
         Node(
             package='px4_offboard',
             namespace='px4_offboard',
             executable='velocity_control',
-            name='velocity'
+            name='velocity',
+            parameters=[{'use_sim_time': True}]
         ),
+        # Visualization node
         Node(
             package='rviz2',
             namespace='',
             executable='rviz2',
             name='rviz2',
-            arguments=['-d', [os.path.join(package_dir, 'visualize.rviz')]]
-        )
+            arguments=['-d', [os.path.join(package_dir, 'visualize.rviz')]],
+            parameters=[{'use_sim_time': True}]
+        ),
+        # Define the transform to the LiDAR base
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='lidar_static_tf',
+            arguments=[
+                '0.12',  # x (m)
+                '0.0',  # y
+                '0.26',  # z
+                '0.0',  # roll
+                '0.0',  # pitch
+                '0.0',  # yaw
+                'drone_base',                      # parent frame
+                'x500_lidar_2d_0/link/lidar_2d_v2'   # child frame (the LiDAR’s header.frame_id)
+            ],
+            parameters=[{'use_sim_time': True}]  # if you’re in simulation
+        ),
     ])

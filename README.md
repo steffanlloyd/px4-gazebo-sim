@@ -28,6 +28,8 @@ To set up the repository, run the `scripts/init.sh` script:
 ```
 This will download the PX4 autopilot software to `libs/PX4-Autopilot`, build the docker image, and download QGroundControl executable to your machine. It will take 5-6 minutes to run, depending on your internet speed.
 
+It will also copy a modified Lidar scanner model (stored in `resources/models/lidar_2d_v2/model.sdf`) into the models directory of the PX4-Autopilot for simulation.
+
 Then, run the docker. To access the GUI, this command MUST be run from within an active display (e.g., you can't run the run command from an SSH connection).
 ```bash
 ./scripts/docker_run.sh
