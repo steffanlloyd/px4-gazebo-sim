@@ -74,6 +74,7 @@ Second, **in the docker image**, run the Gazebo simulation. Use this command:
 cd ~/libraries/PX4-Autopilot
 PX4_GZ_WORLD=baylands make px4_sitl gz_x500_lidar_2d
 ```
+This will initialize the simulation in the baylands map, using a x500 drone and a 2D lidar scanner.
 
 ### MicroDDS
 Lastly, you need to run MicroDDS, **in the docker image** to allow the simulation to communicate with ROS. Use this code:
@@ -97,6 +98,8 @@ ros2 run px4_offboard control
 ```
 
 This will allow you to control the simulation from ROS. Press the space bar to take off, then you can use the arrow keys and WASD to navigate the drone around.
+
+In the RViZ map, you'll be able to see the path the drone takes, and the LiDAR data that it is recieving.
 
 For the challenge, you will need to make a new ROS package (or modify this existing one), to read in the ROS messages, and automatically take actions based on the result to navigate through the forest, and map the surrounding environment.
 
